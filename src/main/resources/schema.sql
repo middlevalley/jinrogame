@@ -1,11 +1,10 @@
 CREATE TABLE roles (
-  roleid IDENTITY NOT NULL,
-  roleName VARCHAR NOT NULL,
+  roleName VARCHAR IDENTITY NOT NULL,
   group VARCHAR
 );
 
 CREATE TABLE users (
-  nameid IDENTITY NOT NULL,
+  nameid IDENTITY,
   userName VARCHAR NOT NULL,
   voted INT
 );
