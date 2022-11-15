@@ -1,6 +1,6 @@
 CREATE TABLE roles (
-  roleName VARCHAR IDENTITY NOT NULL,
-  group VARCHAR
+  roleName VARCHAR NOT NULL,
+  groups VARCHAR
 );
 
 CREATE TABLE users (
