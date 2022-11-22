@@ -8,6 +8,22 @@
 
 <body>
   <p>vote.htmlを表示はできるようにしました</p>
+
+  <div th:if="${users}">
+    <table border="1">
+      <thead>
+        <th>Index</th>
+        <th>名前</th>
+        <th>投票数</th>
+      </thead>
+      <tr th:each="user,stat:${users}">
+        <td>[[${stat.index}]]</td>
+        <td>[[${user.userName}]]</td>
+        <td>[[${user.voted}]]</td>
+      </tr>
+    </table>
+  </div>
+
 </body>
 
 </html>
