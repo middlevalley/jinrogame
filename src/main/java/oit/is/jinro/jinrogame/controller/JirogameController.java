@@ -18,6 +18,8 @@ import oit.is.jinro.jinrogame.model.RoleMapper;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.util.Random;
+
 @Controller
 @RequestMapping("/vote")
 public class JirogameController {
@@ -28,6 +30,15 @@ public class JirogameController {
 
   @GetMapping("step1")
   public String vote01(ModelMap model) {
+    ArrayList<Users> users = UMapper.selectAll();
+    model.addAttribute("users", users);
+    return "vote.html";
+  }
+
+  @GetMapping("step2")
+  public String vote02(ModelMap model) {
+    Random rand = new Random();
+    int tmp = rand.nextInt(4);
     ArrayList<Users> users = UMapper.selectAll();
     ArrayList<Role> roles = RMapper.selectAll();
     model.addAttribute("users", users);
