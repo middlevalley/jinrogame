@@ -7,5 +7,6 @@ CREATE TABLE roles (
 CREATE TABLE users (
   id IDENTITY,
   userName VARCHAR NOT NULL,
-  voted INT
+  voted INT,
+  userole VARCHAR
 );
