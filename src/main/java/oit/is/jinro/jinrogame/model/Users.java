@@ -4,6 +4,7 @@ public class Users {
   int id;
   String userName;
   int voted;
+  String userRole;
 
   public Users() {
 
@@ -31,5 +32,13 @@ public class Users {
 
   public void setVoted(int voted) {
     this.voted = voted;
+  }
+
+  public String getUserRole() {
+    return userRole;
+  }
+
+  public void setUserRole(String userRole) {
+    this.userRole = userRole;
   }
 }

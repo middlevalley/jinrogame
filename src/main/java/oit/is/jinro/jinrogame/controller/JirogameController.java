@@ -39,6 +39,7 @@ public class JirogameController {
   public String vote02(ModelMap model) {
     Random rand = new Random();
     int tmp = rand.nextInt(4);
+    
     ArrayList<Users> users = UMapper.selectAll();
     ArrayList<Role> roles = RMapper.selectAll();
     model.addAttribute("users", users);

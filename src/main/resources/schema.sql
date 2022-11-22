@@ -8,5 +8,5 @@ CREATE TABLE users (
   id IDENTITY,
   userName VARCHAR NOT NULL,
   voted INT,
-  userole VARCHAR
+  userRole VARCHAR
 );
