@@ -1,5 +1,5 @@
-INSERT INTO roles (roleName,groups) VALUES ('villager','villagers');
-INSERT INTO roles (roleName,groups) VALUES ('werewolf','werewolves');
+INSERT INTO roles (roleName,camp) VALUES ('villager','villagers');
+INSERT INTO roles (roleName,camp) VALUES ('wolf','wolves');
 INSERT INTO users (userName) VALUES ('people1');
 INSERT INTO users (userName) VALUES ('people2');
 INSERT INTO users (userName) VALUES ('people3');
