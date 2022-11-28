@@ -5,9 +5,9 @@ public class Role {
   String camp;
 }
 
-public String getRoleName() {
-  return roleName;
-}
+  public String getRoleName() {
+    return roleName;
+  }
 
 public void setRoleName() {
   this.roleName =roleName;
