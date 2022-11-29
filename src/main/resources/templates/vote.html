@@ -14,15 +14,16 @@
       <thead>
         <th>Index</th>
         <th>名前</th>
-        <th>投票数</th>
+        <th>役職名</th>
       </thead>
       <tr th:each="user,stat:${users}">
         <td>[[${stat.index}]]</td>
         <td>[[${user.userName}]]</td>
-        <td>[[${user.voted}]]</td>
+        <td>[[${user.userRole}]]</td>
       </tr>
     </table>
   </div>
+  <a href="/vote/step2">役職割りへ</a>
 
 </body>
 
