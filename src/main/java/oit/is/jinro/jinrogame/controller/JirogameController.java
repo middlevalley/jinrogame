@@ -10,9 +10,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import oit.is.jinro.jinrogame.model.UserMapper;
 import oit.is.jinro.jinrogame.model.Users;
+import oit.is.jinro.jinrogame.service.AsyncJinroVote;
 import oit.is.jinro.jinrogame.model.Role;
 import oit.is.jinro.jinrogame.model.RoleMapper;
 
@@ -27,6 +29,9 @@ public class JirogameController {
   UserMapper UMapper;
   @Autowired
   RoleMapper RMapper;
+
+  @Autowired
+  AsyncJinroVote JVote;
 
   @GetMapping("step1")
   public String vote01(ModelMap model) {
@@ -60,9 +65,27 @@ public class JirogameController {
       } else {
         user.setUserRole("villager");
       }
+      UMapper.updateById(user);
     }
     model.addAttribute("users", users);
     model.addAttribute("roles", roles);
     return "vote.html";
+  }
+
+  @GetMapping("step3")
+  public String vote03(@RequestParam Integer id, ModelMap model) {
+    final Users user = JVote.syncKillUser(id);
+    model.addAttribute("user", user);
+
+    final ArrayList<Users> usersList = JVote.syncShowUserList();
+    model.addAttribute("users", usersList);
+    return "vote.html";
+  }
+
+  @GetMapping("step4")
+  public SseEmitter sample59() {
+    final SseEmitter sseEmitter = new SseEmitter();
+    this.JVote.asyncShowUsersList(sseEmitter);
+    return sseEmitter;
   }
 }

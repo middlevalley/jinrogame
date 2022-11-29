@@ -4,6 +4,33 @@
 <head>
   <meta charset="utf-8">
   <title>参加者</title>
+  <script>
+    window.onload = function () {
+      var sse = new EventSource('/vote/step3');
+      sse.onmessage = function (event) {
+        console.log("sse.onmessage")
+        console.log(event.data);
+        var users_list = JSON.parse(event.data);//JSONオブジェクトとしてparse
+        var users_table = "";
+        // DBに残っているフルーツのリストがJSONオブジェクトとして得られるので，htmlを作成し，tbodyの中身毎入れ替える
+        for (var i = 0; i < users_list.length; i++) {
+          var bgn_tr = "<tr>";
+          var end_tr = "</tr>";
+          var idx = "<td>" + i + "</td>";
+          var u_id = "<td>" + users_list[i].id + "</td>";
+          var u_role = "<td>" + users_list[i].userRole + "</td>";
+          var u_proc = "<td>" + "<a href='/vote/itep3?id=" + fruits_list[i].id + "'>処刑</a>" + "</td>"
+          users_table = users_table + bgn_tr + idx + u_name + u_price + u_proc + end_tr;
+
+        }
+        console.log(users_table);
+        var tbody = document.getElementById("users_list");
+        tbody.innerHTML = users_table;//idがfruits_listのtbodyのHTMLを差し替える
+
+      }
+    }
+  </script>
+
 </head>
 
 <body>
@@ -20,6 +47,7 @@
         <td>[[${stat.index}]]</td>
         <td>[[${user.userName}]]</td>
         <td>[[${user.userRole}]]</td>
+        <td><a th:href="@{/vote/step3(id=${user.id})}">処刑</a></td>
       </tr>
     </table>
   </div>
