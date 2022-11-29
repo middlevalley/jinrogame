@@ -43,12 +43,16 @@
         <th>名前</th>
         <th>役職名</th>
       </thead>
-      <tr th:each="user,stat:${users}">
-        <td>[[${stat.index}]]</td>
-        <td>[[${user.userName}]]</td>
-        <td>[[${user.userRole}]]</td>
-        <td><a th:href="@{/vote/step3(id=${user.id})}">処刑</a></td>
-      </tr>
+      <tbody id="users_list">
+        <span th:each="${users1}">
+          <tr th:each="user,stat:${users}">
+            <td>[[${stat.index}]]</td>
+            <td>[[${user.userName}]]</td>
+            <td>[[${user.userRole}]]</td>
+            <td><a th:href="@{/vote/step3(id=${user.id})}">処刑</a></td>
+          </tr>
+        </span>
+      </tbody>
     </table>
   </div>
   <a href="/vote/step2">役職割りへ</a>
