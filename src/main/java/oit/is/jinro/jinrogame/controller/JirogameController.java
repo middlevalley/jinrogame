@@ -37,11 +37,30 @@ public class JirogameController {
 
   @GetMapping("step2")
   public String vote02(ModelMap model) {
-    Random rand = new Random();
-    int tmp = rand.nextInt(4);
-    
     ArrayList<Users> users = UMapper.selectAll();
     ArrayList<Role> roles = RMapper.selectAll();
+    int roleDicide;
+
+    for (Role role : roles) {
+      if (role.getRoleName().equals("villager")) {
+        role.setMAX_num(3);
+      } else {
+        if (role.getMAX_num() == 0) {
+          role.setMAX_num(1);
+        }
+      }
+    }
+    for (Users user : users) {
+      roleDicide = (int) (Math.random() * 10 % 2);
+      if (roles.get(roleDicide).getRoleName().equals("villager")) {
+        user.setUserRole(roles.get(roleDicide).getRoleName());
+      } else if (roles.get(roleDicide).getMAX_num() != 0) {
+        user.setUserRole(roles.get(roleDicide).getRoleName());
+        roles.get(roleDicide).setMAX_num(0);
+      } else {
+        user.setUserRole("villager");
+      }
+    }
     model.addAttribute("users", users);
     model.addAttribute("roles", roles);
     return "vote.html";
