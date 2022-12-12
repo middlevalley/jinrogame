@@ -34,7 +34,7 @@
 <body>
   <p>vote.htmlを表示はできるようにしました</p>
 
-  <div th:if="${users}">
+  <div>
     <table border="1">
       <thead>
         <th>Index</th>
@@ -42,7 +42,7 @@
         <th>役職名</th>
       </thead>
       <tbody id="users_list">
-        <span th:each="${users1}">
+        <span th:if="${users}">
           <tr th:each="user,stat:${users}">
             <td>[[${stat.index}]]</td>
             <td>[[${user.userName}]]</td>
