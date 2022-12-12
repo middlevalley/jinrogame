@@ -16,7 +16,6 @@ import oit.is.jinro.jinrogame.model.UserMapper;
 
 @Service
 public class AsyncJinroVote {
-  boolean dbUpdated = false;
 
   private final Logger logger = LoggerFactory.getLogger(AsyncJinroVote.class);
 
@@ -40,18 +39,10 @@ public class AsyncJinroVote {
    */
   @Async
   public void asyncShowUsersList(SseEmitter emitter) {
-    dbUpdated = true;
     try {
-      while (true) {
-        if (false == dbUpdated) {
-          TimeUnit.MILLISECONDS.sleep(500);
-          continue;
-        }
         ArrayList<Users> users1 = this.syncShowUserList();
         emitter.send(users1);
         TimeUnit.MILLISECONDS.sleep(1000);
-        dbUpdated = false;
-      }
     } catch (Exception e) {
       logger.warn("Exception:" + e.getClass().getName() + ":" + e.getMessage());
     } finally {

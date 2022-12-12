@@ -1,32 +1,31 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.springframework.org/schema/security">
+
 
 <head>
   <meta charset="utf-8">
   <title>参加者</title>
   <script>
     window.onload = function () {
-      var sse = new EventSource('/vote/step3');
+      var sse = new EventSource('/vote/step4');
       sse.onmessage = function (event) {
         console.log("sse.onmessage")
         console.log(event.data);
-        var users_list = JSON.parse(event.data);//JSONオブジェクトとしてparse
+        var users_list = JSON.parse(event.data);
         var users_table = "";
-        // DBに残っているフルーツのリストがJSONオブジェクトとして得られるので，htmlを作成し，tbodyの中身毎入れ替える
         for (var i = 0; i < users_list.length; i++) {
           var bgn_tr = "<tr>";
           var end_tr = "</tr>";
           var idx = "<td>" + i + "</td>";
-          var u_id = "<td>" + users_list[i].id + "</td>";
+          var u_name = "<td>" + users_list[i].userName + "</td>";
           var u_role = "<td>" + users_list[i].userRole + "</td>";
-          var u_proc = "<td>" + "<a href='/vote/itep3?id=" + fruits_list[i].id + "'>処刑</a>" + "</td>"
-          users_table = users_table + bgn_tr + idx + u_name + u_price + u_proc + end_tr;
+          var u_proc = "<td>" + "<a href='/vote/step3?id=" + users_list[i].id + "'>処刑</a>" + "</td>"
+          users_table = users_table + bgn_tr + idx + u_name + u_role + u_proc + end_tr;
 
         }
         console.log(users_table);
         var tbody = document.getElementById("users_list");
-        tbody.innerHTML = users_table;//idがfruits_listのtbodyのHTMLを差し替える
-
+        tbody.innerHTML = users_table;
       }
     }
   </script>
@@ -34,21 +33,25 @@
 </head>
 
 <body>
-  <p>vote.htmlを表示はできるようにしました</p>
+  <p>現在は表が消えていくだけですがここから待機ページ→処刑確認ページという感じで挙動させる予定です</p>
 
-  <div th:if="${users}">
+  <div>
     <table border="1">
       <thead>
         <th>Index</th>
         <th>名前</th>
         <th>役職名</th>
       </thead>
-      <tr th:each="user,stat:${users}">
-        <td>[[${stat.index}]]</td>
-        <td>[[${user.userName}]]</td>
-        <td>[[${user.userRole}]]</td>
-        <td><a th:href="@{/vote/step3(id=${user.id})}">処刑</a></td>
-      </tr>
+      <tbody id="users_list">
+        <span th:if="${users}">
+          <tr th:each="user,stat:${users}">
+            <td>[[${stat.index}]]</td>
+            <td>[[${user.userName}]]</td>
+            <td>[[${user.userRole}]]</td>
+            <td><a th:href="@{/vote/step3(id=${user.id})}">投票</a></td>
+          </tr>
+        </span>
+      </tbody>
     </table>
   </div>
   <a href="/vote/step2">役職割りへ</a>
