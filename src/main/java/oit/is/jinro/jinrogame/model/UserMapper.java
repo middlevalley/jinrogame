@@ -17,8 +17,17 @@ public interface UserMapper {
   @Select("SELECT * from users where id = #{id}")
   Users selectById(int id);
 
+  @Select("SELECT voted from users where id = #{id}")
+  int selectByIdGetVoted(int id);
+
   @Update("UPDATE USERS SET USERROLE=#{userRole} where id = #{id}")
   void updateById(Users users);
+
+  @Update("UPDATE USERS SET voted = voted + 1 where id = #{id}")
+  void updateVoteNum(int id);
+
+  @Update("UPDATE USERS SET voted = 0")
+  void voteInit();
 
   @Delete("DELETE FROM users WHERE ID =#{id}")
   void deleteById(int id);
