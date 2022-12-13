@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>人狼ゲーム!!!</title>
+</head>
+
+<body>
+  <table border="1">
+    <thead>
+      <th>Index</th>
+      <th>名前</th>
+      <th>役職名</th>
+      <th>票数</th>
+    </thead>
+    <tbody>
+      <span th:if="${users}">
+        <tr th:each="user,stat:${users}">
+          <td>[[${stat.index}]]</td>
+          <td>[[${user.userName}]]</td>
+          <td>[[${user.userRole}]]</td>
+          <td>[[${user.voted}]]</td>
+          <td><a th:href="@{/vote/step3(id=${user.id})}">投票</a></td>
+        </tr>
+      </span>
+    </tbody>
+  </table>
+</body>
+
+</html>
