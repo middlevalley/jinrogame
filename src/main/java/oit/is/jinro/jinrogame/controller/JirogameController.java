@@ -35,6 +35,7 @@ public class JirogameController {
 
   @GetMapping("step1")
   public String vote01(ModelMap model) {
+    UMapper.voteInit();
     ArrayList<Users> users = UMapper.selectAll();
     model.addAttribute("users", users);
     return "vote.html";
