@@ -34,6 +34,10 @@ public class AsyncJinroVote {
     return user;
   }
 
+  public void syncUpdateVoteNum(int id) {
+    uMapper.updateVoteNum(id);
+  }
+
   /**
    * @param emitter
    */
