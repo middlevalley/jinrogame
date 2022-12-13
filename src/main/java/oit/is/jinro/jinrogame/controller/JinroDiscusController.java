@@ -1,5 +1,6 @@
 package oit.is.jinro.jinrogame.controller;
 
+import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 
@@ -15,7 +16,7 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import oit.is.jinro.jinrogame.model.UserMapper;
 import oit.is.jinro.jinrogame.model.Users;
-import oit.is.jinro.jinrogame.service.AsyncJinroVote;
+import oit.is.jinro.jinrogame.service.AsyncJinroCounter;
 import oit.is.jinro.jinrogame.model.Role;
 import oit.is.jinro.jinrogame.model.RoleMapper;
 
@@ -29,6 +30,9 @@ public class JinroDiscusController {
 
   @Autowired
   RoleMapper RMapper;
+
+  @Autowired
+  AsyncJinroCounter Jcounter;
 
   @GetMapping("step1")
   public String Discus1(ModelMap model) {
@@ -75,6 +79,13 @@ public class JinroDiscusController {
     model.addAttribute("users", users);
     model.addAttribute("roles", roles);
     return "counter.html";
+  }
+
+  @GetMapping("step4")
+  public SseEmitter vote04() throws IOException, InterruptedException {
+    final SseEmitter sseEmitter = new SseEmitter();
+    this.Jcounter.count(sseEmitter);
+    return sseEmitter;
   }
 
 }

@@ -83,7 +83,7 @@ public class JirogameController {
   }
 
   @GetMapping("step4")
-  public SseEmitter sample59() {
+  public SseEmitter vote04() {
     final SseEmitter sseEmitter = new SseEmitter();
     this.JVote.asyncShowUsersList(sseEmitter);
     return sseEmitter;
