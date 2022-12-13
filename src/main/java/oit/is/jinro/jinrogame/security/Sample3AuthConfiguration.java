@@ -27,7 +27,7 @@ public class Sample3AuthConfiguration {
     UserDetails user1 = users
         .username("user1")
         .password("$2y$10$ngxCDmuVK1TaGchiYQfJ1OAKkd64IH6skGsNw1sLabrTICOHPxC0e")
-        .roles("USER")
+        .roles("HOST")
         .build();
     UserDetails user2 = users
         .username("user2")
@@ -65,7 +65,8 @@ public class Sample3AuthConfiguration {
     // mvcMatchers().authenticated()がmvcMatchersに指定されたアクセス先に認証処理が必要であることを示す
     // authenticated()の代わりにpermitAll()と書くと認証不要となる
     http.authorizeHttpRequests()
-        .mvcMatchers("/vote/**").authenticated();
+        .mvcMatchers("/vote/**").authenticated()
+        .mvcMatchers("/discus/**").authenticated();
     // .mvcMatchers("/sample58/**").authenticated();
 
     http.logout().logoutSuccessUrl("/"); // ログアウト時は "http://localhost:8000/" に戻る
