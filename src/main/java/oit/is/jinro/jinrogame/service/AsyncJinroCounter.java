@@ -24,12 +24,13 @@ public class AsyncJinroCounter {
   public void count(SseEmitter emitter) {
     logger.info("count start");
     try {
-      while (count < 10) {
+      while (count <= 10) {
         logger.info("send:" + count);
         emitter.send(count);
         count++;
         TimeUnit.SECONDS.sleep(1);
       }
+      emitter.send("complete");
     } catch (Exception e) {
       logger.warn("Exception:" + e.getClass().getName() + ":" + e.getMessage());
     }

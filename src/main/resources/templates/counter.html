@@ -8,8 +8,14 @@
     window.onload = function () {
       var sse = new EventSource('/discus/step4');
       sse.onmessage = function (event) {
+        console.log("sse.onmessage");
         console.log(event.data);
-        document.getElementById("p1").textContext = event.data;
+        var p = document.getElementById("p1");
+        if (event.data == "complete") {
+          p.innerHTML = "<a href='/vote/step1'>投票へ</a>";
+        } else {
+          p.innerHTML = event.data + "sec";
+        }
       }
     }
   </script>
