@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.springframework.org/schema/security">
+
+<head>
+  <meta charset="utf-8">
+  <title>人狼ゲーム!!!</title>
+  <script>
+    window.onload = function () {
+      var sse = new EventSource('/vote/step4');
+      sse.onmessage = function (event) {
+        console.log("sse.onmessage");
+        console.log(event.data);
+        var p = document.getElementById("s1")
+        if (event.data == stay) {
+          p.innerHTML = "投票終了までお待ちください";
+        } else {
+          p.innerHTML = "<a href='/vote/step5'>結果表示</a>";
+        }
+      }
+    }
+  </script>
+</head>
+
+<body>
+  <p id="s1">投票終了までお待ちください</p>
+</body>
+
+</html>
