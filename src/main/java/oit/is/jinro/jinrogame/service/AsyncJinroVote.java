@@ -55,4 +55,12 @@ public class AsyncJinroVote {
     System.out.println("asyncShowUsersList complete");
   }
 
+  @Async
+  public void asyncShowVoted(SseEmitter emitter) {
+    try {
+      ArrayList<Users> vote = this.();
+      emitter.send(vote);
+    }
+  }
+
 }

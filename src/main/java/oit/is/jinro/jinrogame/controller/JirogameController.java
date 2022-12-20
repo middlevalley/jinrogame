@@ -76,10 +76,7 @@ public class JirogameController {
   @GetMapping("step3")
   public String vote03(@RequestParam Integer id, ModelMap model) {
     JVote.syncUpdateVoteNum(id);
-
-    final ArrayList<Users> usersList = JVote.syncShowUserList();
-    model.addAttribute("users", usersList);
-    return "vote.html";
+    return "standby.html";
   }
 
   @GetMapping("step4")
