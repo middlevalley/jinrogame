@@ -17,6 +17,9 @@ public interface UserMapper {
   @Select("SELECT * from users where id = #{id}")
   Users selectById(int id);
 
+  @Select("SELECT count(id) from users")
+  int selectGetAlive();
+
   @Select("SELECT voted from users where id = #{id}")
   int selectByIdGetVoted(int id);
 

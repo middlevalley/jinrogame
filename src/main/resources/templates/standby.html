@@ -11,7 +11,7 @@
         console.log("sse.onmessage");
         console.log(event.data);
         var p = document.getElementById("s1")
-        if (event.data == stay) {
+        if (event.data == "stay") {
           p.innerHTML = "投票終了までお待ちください";
         } else {
           p.innerHTML = "<a href='/vote/step5'>結果表示</a>";

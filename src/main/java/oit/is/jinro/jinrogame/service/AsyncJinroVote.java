@@ -17,6 +17,7 @@ import oit.is.jinro.jinrogame.model.UserMapper;
 @Service
 public class AsyncJinroVote {
 
+  int count = 0;
   private final Logger logger = LoggerFactory.getLogger(AsyncJinroVote.class);
 
   @Autowired
@@ -58,8 +59,16 @@ public class AsyncJinroVote {
   @Async
   public void asyncShowVoted(SseEmitter emitter) {
     try {
-      ArrayList<Users> vote = this.();
-      emitter.send(vote);
+      count++;
+      logger.info("send:" + count);
+      if(uMapper.selectGetAlive() == count){
+        emitter.send("complete");
+      }
+      else{
+        emitter.send("stay");
+      }
+    } catch (Exception e) {
+      logger.warn("Exception:" + e.getClass().getName() + ":" + e.getMessage());
     }
   }
 
