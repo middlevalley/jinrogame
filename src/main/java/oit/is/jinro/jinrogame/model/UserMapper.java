@@ -32,6 +32,9 @@ public interface UserMapper {
   @Update("UPDATE USERS SET voted = 0")
   void voteInit();
 
+  @Select("SELECT id, Max(voted) from users group by id;")
+  ArrayList<VoteManager> selectMaxVote();
+
   @Delete("DELETE FROM users WHERE ID =#{id}")
   void deleteById(int id);
 }

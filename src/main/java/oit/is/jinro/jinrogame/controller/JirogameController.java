@@ -14,6 +14,7 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import oit.is.jinro.jinrogame.model.UserMapper;
 import oit.is.jinro.jinrogame.model.Users;
+import oit.is.jinro.jinrogame.model.VoteManager;
 import oit.is.jinro.jinrogame.service.AsyncJinroVote;
 import oit.is.jinro.jinrogame.model.Role;
 import oit.is.jinro.jinrogame.model.RoleMapper;
@@ -84,5 +85,18 @@ public class JirogameController {
     final SseEmitter sseEmitter = new SseEmitter();
     this.JVote.asyncShowUsersList(sseEmitter);
     return sseEmitter;
+  }
+
+  @GetMapping("step5")
+  public String vote05(ModelMap model) {
+    ArrayList<VoteManager> VM = UMapper.selectMaxVote();
+    if (VM.size() != 1) {
+
+    } else {
+      UMapper.deleteById(VM.get(0).getId());
+    }
+    Users user = UMapper.selectById(VM.get(0).getId());
+    model.addAttribute("killedUser", user);
+    return "result.html";
   }
 }

@@ -61,15 +61,16 @@ public class AsyncJinroVote {
     try {
       count++;
       logger.info("send:" + count);
-      if(uMapper.selectGetAlive() == count){
+      if (uMapper.selectGetAlive() == count) {
         emitter.send("complete");
-      }
-      else{
+      } else {
         emitter.send("stay");
       }
     } catch (Exception e) {
       logger.warn("Exception:" + e.getClass().getName() + ":" + e.getMessage());
     }
   }
+
+
 
 }
