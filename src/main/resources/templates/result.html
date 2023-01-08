@@ -8,7 +8,7 @@
 
 <body>
   <div th:if="${killedUser}">
-    [[${killedUser.userName}]]が処刑されました。
+    [[${killedUser.userName}]]
   </div>
   <div sec:authorize="hasRole('ROLE_HOST')">
     <a href="/discus/step2">次の議論へ</a>

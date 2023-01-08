@@ -29,6 +29,9 @@ public interface UserMapper {
   @Select("SELECT voted from users where id = #{id}")
   int selectByIdGetVoted(int id);
 
+  @Select("SELECT * from users where voted = #{num}")
+  ArrayList<Users> selectKilledUser(int num);
+
   @Insert("INSERT INTO users (userName) VALUES (#{name})")
   void InsertJoinUser(String name);
 
@@ -41,8 +44,8 @@ public interface UserMapper {
   @Update("UPDATE USERS SET voted = 0")
   void voteInit();
 
-  @Select("SELECT id, Max(voted) from users group by id;")
-  ArrayList<VoteManager> selectMaxVote();
+  @Select("SELECT Max(voted) from users;")
+  int selectMaxVote();
 
   @Delete("DELETE FROM users WHERE ID =#{id}")
   void deleteById(int id);
