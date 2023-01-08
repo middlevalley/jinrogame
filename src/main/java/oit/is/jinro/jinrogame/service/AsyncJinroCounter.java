@@ -17,19 +17,17 @@ import oit.is.jinro.jinrogame.model.UserMapper;
 
 @Service
 public class AsyncJinroCounter {
-  int count = 0;
+
+  @Autowired
+  UserMapper UMapper;
+
   private final Logger logger = LoggerFactory.getLogger(AsyncJinroCounter.class);
 
   @Async
   public void count(SseEmitter emitter) {
     logger.info("count start");
     try {
-      while (count <= 10) {
-        logger.info("send:" + count);
-        emitter.send(count);
-        count++;
-        TimeUnit.SECONDS.sleep(1);
-      }
+      TimeUnit.SECONDS.sleep(10);
       emitter.send("complete");
     } catch (Exception e) {
       logger.warn("Exception:" + e.getClass().getName() + ":" + e.getMessage());

@@ -20,8 +20,17 @@ public interface UserMapper {
   @Select("SELECT count(id) from users")
   int selectGetAlive();
 
+  @Select("Select min(id) from users")
+  int selectGetMinId();
+
+  @Select("SELECT * FROM users where userName = #{name}")
+  Users selectByName(String name);
+
   @Select("SELECT voted from users where id = #{id}")
   int selectByIdGetVoted(int id);
+
+  @Insert("INSERT INTO users (userName) VALUES (#{name})")
+  void InsertJoinUser(String name);
 
   @Update("UPDATE USERS SET USERROLE=#{userRole} where id = #{id}")
   void updateById(Users users);
