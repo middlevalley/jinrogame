@@ -49,4 +49,7 @@ public interface UserMapper {
 
   @Delete("DELETE FROM users WHERE ID =#{id}")
   void deleteById(int id);
+
+  @Update("UPDATE USERS SET killFrag = killFrag + 1 where id = #{id}")
+  void updateKillFragUpById(int id);
 }
