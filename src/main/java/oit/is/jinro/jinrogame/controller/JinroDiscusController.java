@@ -2,6 +2,7 @@ package oit.is.jinro.jinrogame.controller;
 
 import java.io.IOException;
 import java.lang.reflect.Array;
+import java.security.Principal;
 import java.util.ArrayList;
 
 import org.apache.catalina.User;
@@ -25,6 +26,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping("/discus")
 public class JinroDiscusController {
+
   @Autowired
   UserMapper UMapper;
 
@@ -35,7 +37,9 @@ public class JinroDiscusController {
   AsyncJinroCounter Jcounter;
 
   @GetMapping("step1")
-  public String Discus1(ModelMap model) {
+  public String Discus1(ModelMap model, Principal prin) {
+    UMapper.InsertJoinUser(prin.getName());
+    System.out.println("joinUserName: " + prin.getName());
     return "preCounter.html";
   }
 

@@ -14,7 +14,7 @@
         if (event.data == "complete") {
           p.innerHTML = "<a href='/vote/step1'>投票へ</a>";
         } else {
-          p.innerHTML = event.data + "sec";
+          p.innerHTML = "議論中";
         }
       }
     }
@@ -22,7 +22,7 @@
 </head>
 
 <body>
-  <p id="p1"></p>
+  <p id="p1">議論中</p>
 </body>
 
 </html>
