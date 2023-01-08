@@ -6,7 +6,7 @@
   <title>人狼ゲーム!!!</title>
   <script>
     window.onload = function () {
-      var sse = new EventSource('/vote/step4');
+      var sse = new EventSource('/vote/step6');
       sse.onmessage = function (event) {
         console.log("sse.onmessage");
         console.log(event.data);
@@ -14,7 +14,12 @@
         if (event.data == "stay") {
           p.innerHTML = "投票終了までお待ちください";
         } else {
-          p.innerHTML = "<a href='/vote/step5'>結果表示</a>";
+          if (event.data == "noDeath") {
+            p.innerHTML = "<a href='/vote/step5?id=-1'>結果表示</a>";
+          }
+          else {
+            p.innerHTML = "<a href='/vote/step5?id=" + event.data + "'>結果表示</a>";
+          }
         }
       }
     }

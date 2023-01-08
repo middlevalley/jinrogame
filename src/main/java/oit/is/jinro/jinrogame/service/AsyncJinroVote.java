@@ -6,17 +6,20 @@ import java.util.concurrent.TimeUnit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.mongo.embedded.EmbeddedMongoAutoConfiguration;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import oit.is.jinro.jinrogame.model.Users;
+import oit.is.jinro.jinrogame.model.VoteManager;
 import oit.is.jinro.jinrogame.model.UserMapper;
 
 @Service
 public class AsyncJinroVote {
 
+  int deathFlag = 0;
   int count = 0;
   private final Logger logger = LoggerFactory.getLogger(AsyncJinroVote.class);
 
@@ -61,16 +64,29 @@ public class AsyncJinroVote {
     try {
       count++;
       logger.info("send:" + count);
-      if (uMapper.selectGetAlive() == count) {
-        emitter.send("complete");
+      logger.info(String.valueOf(uMapper.selectGetAlive()));
+      if (uMapper.selectGetAlive() <= count) {
+        ArrayList<Users> killedUsers = uMapper.selectKilledUser(uMapper.selectMaxVote());
+        System.out.println(killedUsers.size());
+        if (killedUsers.size() != 1) {
+          emitter.send("noDeath");
+        } else {
+          if (deathFlag == 0) {
+            uMapper.deleteById(killedUsers.get(0).getId());
+            deathFlag++;
+          }
+          emitter.send(killedUsers.get(0).getId());
+        }
       } else {
+        deathFlag = 0;
         emitter.send("stay");
+        TimeUnit.SECONDS.sleep(10);
       }
     } catch (Exception e) {
       logger.warn("Exception:" + e.getClass().getName() + ":" + e.getMessage());
+    } finally {
+      emitter.complete();
     }
   }
-
-
 
 }

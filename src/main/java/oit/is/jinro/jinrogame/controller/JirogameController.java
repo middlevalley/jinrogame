@@ -88,15 +88,21 @@ public class JirogameController {
   }
 
   @GetMapping("step5")
-  public String vote05(ModelMap model) {
-    ArrayList<VoteManager> VM = UMapper.selectMaxVote();
-    if (VM.size() != 1) {
-
+  public String vote05(@RequestParam Integer id, ModelMap model) {
+    if (id != -1) {
+      Users user = UMapper.selectById(id);
+      model.addAttribute("killedUser", user + "が処刑されました。");
+      return "result.html";
     } else {
-      UMapper.deleteById(VM.get(0).getId());
+      model.addAttribute("killedUser", "無効な投票となりました");
+      return "result.html";
     }
-    Users user = UMapper.selectById(VM.get(0).getId());
-    model.addAttribute("killedUser", user);
-    return "result.html";
+  }
+
+  @GetMapping("step6")
+  public SseEmitter vote06() {
+    final SseEmitter sseEmitter = new SseEmitter();
+    this.JVote.asyncShowVoted(sseEmitter);
+    return sseEmitter;
   }
 }
