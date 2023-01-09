@@ -8,13 +8,10 @@
 
 <body>
   <div th:if="${killedUser}">
-    [[${killedUser.userName}]]
+    [[${killedUser}]]
   </div>
-  <div sec:authorize="hasRole('ROLE_HOST')">
-    <a href="/discus/step2">次の議論へ</a>
-  </div>
-  <div sec:authorize="hasRole('ROLE_USER')">
-    <a href="/discus/step3">次の議論へ</a>
+  <div>
+    <a href="/vote/step7">次へ</a>
   </div>
 </body>
 

@@ -20,6 +20,9 @@ public interface UserMapper {
   @Select("SELECT count(id) from users")
   int selectGetAlive();
 
+  @Select("SELECT * from users")
+  ArrayList<Users> selectGetAliveMember();
+
   @Select("Select min(id) from users")
   int selectGetMinId();
 
@@ -28,6 +31,18 @@ public interface UserMapper {
 
   @Select("SELECT voted from users where id = #{id}")
   int selectByIdGetVoted(int id);
+
+  @Select("SELECT userRole from users where userName = #{name}")
+  String selectGetUserRoleByName(String name);
+
+  @Select("SELECT count(*) from roles join users on roles.roleName = users.userRole")
+  int selectCountAlive();
+
+  @Select("SELECT count(*) from roles join users on roles.roleName = users.userRole where camp = 'wolves'")
+  int selectCountAliveOfWolves();
+
+  @Select("SELECT count(*) from roles join users on roles.roleName = users.userRole where camp = 'villagers'")
+  int selectCountAliveOfVillagers();
 
   @Select("SELECT * from users where voted = #{num}")
   ArrayList<Users> selectKilledUser(int num);
@@ -43,6 +58,9 @@ public interface UserMapper {
 
   @Update("UPDATE USERS SET voted = 0")
   void voteInit();
+
+  @Update("UPDATE USERS SET killFlag = 0")
+  void killFlagInit();
 
   @Select("SELECT Max(voted) from users;")
   int selectMaxVote();
