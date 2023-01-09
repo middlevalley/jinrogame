@@ -36,4 +36,15 @@ public class VoteManager {
     setVote(uMapper.selectByIdGetVoted(this.id));
   }
 
+  public String gameSet() {
+    System.out.println("num: " + uMapper.selectCountAliveOfWolves());
+    if (uMapper.selectCountAliveOfWolves() == 0) {
+      return "villagers";
+    } else if (uMapper.selectCountAliveOfWolves() >= uMapper.selectCountAliveOfVillagers()) {
+      return "wolves";
+    } else {
+      return "continue";
+    }
+  }
+
 }

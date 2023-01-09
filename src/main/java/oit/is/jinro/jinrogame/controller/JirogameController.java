@@ -1,6 +1,7 @@
 package oit.is.jinro.jinrogame.controller;
 
 import java.lang.reflect.Array;
+import java.security.Principal;
 import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,7 @@ import java.util.Random;
 @Controller
 @RequestMapping("/vote")
 public class JirogameController {
+
   @Autowired
   UserMapper UMapper;
   @Autowired
@@ -91,7 +93,7 @@ public class JirogameController {
   public String vote05(@RequestParam Integer id, ModelMap model) {
     if (id != -1) {
       Users user = UMapper.selectById(id);
-      model.addAttribute("killedUser", user + "が処刑されました。");
+      model.addAttribute("killedUser", user.getUserName() + "が処刑されました。");
       return "result.html";
     } else {
       model.addAttribute("killedUser", "無効な投票となりました");
@@ -104,5 +106,24 @@ public class JirogameController {
     final SseEmitter sseEmitter = new SseEmitter();
     this.JVote.asyncShowVoted(sseEmitter);
     return sseEmitter;
+  }
+
+  @GetMapping("step7")
+  public String night01(Principal prin, ModelMap model) {
+    UMapper.killFlagInit();
+    System.out.println(UMapper.selectCountAliveOfWolves());
+    if (UMapper.selectCountAliveOfWolves() == 0) {
+      model.addAttribute("winner", "人狼陣営");
+      return "gameSet.html";
+    } else if (UMapper.selectCountAliveOfWolves() >= UMapper.selectCountAliveOfVillagers()) {
+      model.addAttribute("winner", "人狼陣営");
+      return "gameSet.html";
+    } else {
+      if (UMapper.selectGetUserRoleByName(prin.getName()).equals("wolf")) {
+        ArrayList<Users> users = UMapper.selectGetAliveMember();
+        model.addAttribute("arive_list", users);
+      }
+      return "night.html";
+    }
   }
 }
