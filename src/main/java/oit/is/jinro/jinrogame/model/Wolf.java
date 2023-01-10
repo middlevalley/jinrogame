@@ -4,6 +4,6 @@ public class Wolf {
   UserMapper uMapper;
 
   public void biteYou(int id) {
-    uMapper.updateKillFragUpById(id);
+    uMapper.updateKillFlagUpById(id);
   }
 }
