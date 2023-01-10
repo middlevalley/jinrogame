@@ -53,6 +53,7 @@ public class JinroDiscusController {
     int roleDicide;
     try {
       if (id == 1) {
+
         for (Role role : roles) {
           if (role.getRoleName().equals("villager")) {
             role.setMAX_num(3);
@@ -62,17 +63,20 @@ public class JinroDiscusController {
             }
           }
         }
-        for (Users user : users) {
-          roleDicide = (int) (Math.random() * 10 % 2);
-          if (roles.get(roleDicide).getRoleName().equals("villager")) {
-            user.setUserRole(roles.get(roleDicide).getRoleName());
-          } else if (roles.get(roleDicide).getMAX_num() != 0) {
-            user.setUserRole(roles.get(roleDicide).getRoleName());
-            roles.get(roleDicide).setMAX_num(0);
-          } else {
-            user.setUserRole("villager");
+        while (UMapper.selectCountAliveOfWolves() == 0) {
+          UMapper.userRoleInit();
+          for (Users user : users) {
+            roleDicide = (int) (Math.random() * 10 % 2);
+            if (roles.get(roleDicide).getRoleName().equals("villager")) {
+              user.setUserRole(roles.get(roleDicide).getRoleName());
+            } else if (roles.get(roleDicide).getMAX_num() != 0) {
+              user.setUserRole(roles.get(roleDicide).getRoleName());
+              roles.get(roleDicide).setMAX_num(0);
+            } else {
+              user.setUserRole("villager");
+            }
+            UMapper.updateById(user);
           }
-          UMapper.updateById(user);
         }
         model.addAttribute("role", UMapper.selectGetUserRoleByName(prin.getName()));
       } else {
