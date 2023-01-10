@@ -98,7 +98,7 @@ public class JirogameController {
 
   @GetMapping("step5")
   public String vote05(@RequestParam String userName, ModelMap model) {
-    if (userName != "-1") {
+    if (!(userName.equals("-1"))) {
       model.addAttribute("killedUser", userName + "が処刑されました。");
       return "result.html";
     } else {
