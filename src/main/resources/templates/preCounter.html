@@ -4,34 +4,12 @@
 <head>
   <meta charset="utf-8">
   <title>人狼ゲーム!!!</title>
-  <script>
-    window.onload = function () {
-      var sse = new EventSource('/vote/step4');
-      sse.onmessage = function (event) {
-        console.log("sse.onmessage")
-        console.log(event.data);
-        var users_list = JSON.parse(event.data);
-        var users_table = "";
-        for (var i = 0; i < users_list.length; i++) {
-          var bgn_tr = "<tr>";
-          var end_tr = "</tr>";
-          var idx = "<td>" + i + "</td>";
-          var u_name = "<td>" + users_list[i].userName + "</td>";
-          users_table = users_table + bgn_tr + u_name + end_tr;
-
-        }
-        console.log(users_table);
-        var tbody = document.getElementById("users_list");
-        tbody.innerHTML = users_table;
-      }
-    }
-  </script>
 </head>
 
 <p>以下のメンバーで始めます</p>
 
 <body>
-  [[${role}]]
+  あなたの役職は[[${role}]]です
 
   <div>
     <a href="/discus/step3">議論へ</a>

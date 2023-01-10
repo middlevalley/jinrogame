@@ -83,9 +83,7 @@ public class JinroDiscusController {
       }
     } catch (Exception e) {
     }
-    model.addAttribute("users", users);
-    model.addAttribute("roles", roles);
-    return "counter.html";
+    return "preCounter.html";
   }
 
   @GetMapping("step3")
