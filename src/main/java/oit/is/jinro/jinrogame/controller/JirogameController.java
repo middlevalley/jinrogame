@@ -156,4 +156,9 @@ public class JirogameController {
     this.JNight.asyncKilledUsers(sseEmitter);
     return sseEmitter;
   }
+
+  @GetMapping("step11")
+  public String night05() {
+    return "nightResult.html";
+  }
 }
