@@ -4,25 +4,48 @@
 <head>
   <meta charset="utf-8">
   <title>人狼ゲーム!!!</title>
+  <script>
+    window.onload = function () {
+      var sse = new EventSource('/vote/step10');
+      sse.onmessage = function (event) {
+        console.log("sse.onmessage")
+        console.log(event.data);
+        var users_list = JSON.parse(event.data);
+        var users_table = "";
+        for (var i = 0; i < users_list.length; i++) {
+          var bgn_tr = "<tr>";
+          var end_tr = "</tr>";
+          var idx = "<td>" + i + "</td>";
+          var u_name = "<td>" + users_list[i].userName + "</td>";
+          users_table = users_table + bgn_tr + u_name + end_tr;
+
+        }
+        console.log(users_table);
+        var tbody = document.getElementById("users_list");
+        tbody.innerHTML = users_table;
+      }
+    }
+  </script>
 </head>
 
 <body>
-  <div th:if="${killedUsers}">
-      以下のメンバーが殺されました
-      <table border="1">
-        <thead>
-          <th>名前</th>
-        </thead>
-        <tbody>
-          <tr th:each="user,stat:${killedUsers}">
+  <div>
+    以下のメンバーが殺されました
+    無記入ならば全員生存です。
+    <table border="1">
+      <thead>
+        <td>名前</td>
+      </thead>
+      <tbody id="users_list">
+        <span th:if="${users}">
+          <tr th:each="user,stat:${users}">
             <td>[[${user.userName}]]</td>
           </tr>
-        </tbody>
-      </table>
-    </div>
-    <div th:if="${!(killedUsers)}">誰も殺されませんでした</div>
-    <div></div>
-  <p>夜結果表示用ページです</p>
+        </span>
+      </tbody>
+    </table>
+  </div>
+  <a href="/discus/step5">次へ</a>
 
 </body>
 

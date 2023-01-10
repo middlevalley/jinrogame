@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
+import com.fasterxml.jackson.annotation.JsonCreator.Mode;
+
 import oit.is.jinro.jinrogame.model.UserMapper;
 import oit.is.jinro.jinrogame.model.Users;
 import oit.is.jinro.jinrogame.service.AsyncJinroCounter;
@@ -86,10 +88,24 @@ public class JinroDiscusController {
   }
 
   @GetMapping("step4")
-  public SseEmitter vote04() throws IOException, InterruptedException {
+  public SseEmitter Discus4() throws IOException, InterruptedException {
     final SseEmitter sseEmitter = new SseEmitter();
     this.Jcounter.count(sseEmitter);
     return sseEmitter;
   }
 
+  @GetMapping("step5")
+  public String Discus5(ModelMap model) {
+    if (UMapper.selectCountAliveOfWolves() == 0) {
+      model.addAttribute("winner", "村人陣営");
+      return "gameSet.html";
+    } else if (UMapper.selectCountAliveOfWolves() >= UMapper.selectCountAliveOfVillagers()) {
+      model.addAttribute("winner", "人狼陣営");
+      return "gameSet.html";
+    } else {
+      
+      return "preDiscus.html";
+    }
+
+  }
 }
