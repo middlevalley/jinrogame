@@ -45,6 +45,7 @@ public class JirogameController {
   public String vote01(ModelMap model) {
     UMapper.voteInit();
     UMapper.useFlagInit();
+    JVote.countInit();
     ArrayList<Users> users = UMapper.selectAll();
     model.addAttribute("users", users);
     return "vote.html";
@@ -96,10 +97,9 @@ public class JirogameController {
   }
 
   @GetMapping("step5")
-  public String vote05(@RequestParam Integer id, ModelMap model) {
-    if (id != -1) {
-      Users user = UMapper.selectById(id);
-      model.addAttribute("killedUser", user.getUserName() + "が処刑されました。");
+  public String vote05(@RequestParam String userName, ModelMap model) {
+    if (userName != "-1") {
+      model.addAttribute("killedUser", userName + "が処刑されました。");
       return "result.html";
     } else {
       model.addAttribute("killedUser", "無効な投票となりました");
@@ -151,12 +151,9 @@ public class JirogameController {
   }
 
   @GetMapping("step10")
-  public String night04(ModelMap model) {
-    ArrayList<Users> killedUsers = UMapper.selectKilledUsers();
-    for (Users u : killedUsers) {
-      UMapper.deleteById(u.getId());
-    }
-    model.addAttribute("killedUsers", killedUsers);
-    return "nightResult.html";
+  public SseEmitter night04(ModelMap model) {
+    final SseEmitter sseEmitter = new SseEmitter();
+    this.JNight.asyncKilledUsers(sseEmitter);
+    return sseEmitter;
   }
 }

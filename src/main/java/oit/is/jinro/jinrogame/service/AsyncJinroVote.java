@@ -21,10 +21,15 @@ public class AsyncJinroVote {
 
   int deathFlag = 0;
   int count = 0;
+  ArrayList<Users> killedUsers = new ArrayList<Users>();
   private final Logger logger = LoggerFactory.getLogger(AsyncJinroVote.class);
 
   @Autowired
   UserMapper uMapper;
+
+  public void countInit() {
+    count = 0;
+  }
 
   @Transactional
   public ArrayList<Users> syncShowUserList() {
@@ -66,16 +71,26 @@ public class AsyncJinroVote {
       logger.info("send:" + count);
       logger.info(String.valueOf(uMapper.selectGetAlive()));
       if (uMapper.selectGetAlive() <= count) {
-        ArrayList<Users> killedUsers = uMapper.selectKilledUser(uMapper.selectMaxVote());
+        if (killedUsers.size() == 0) {
+          killedUsers = uMapper.selectKilledUser(uMapper.selectMaxVote());
+        }
         System.out.println(killedUsers.size());
-        if (killedUsers.size() != 1) {
-          emitter.send("noDeath");
-        } else {
-          if (deathFlag == 0) {
+        if (deathFlag == 0) {
+          if (killedUsers.size() != 1) {
+            emitter.send("noDeath");
+          } else {
             uMapper.deleteById(killedUsers.get(0).getId());
-            deathFlag++;
+            emitter.send(killedUsers.get(0).getId());
           }
-          emitter.send(killedUsers.get(0).getId());
+          deathFlag++;
+        } else {
+          if (killedUsers.size() != 1) {
+            emitter.send("noDeath");
+          } else {
+            uMapper.deleteById(killedUsers.get(0).getId());
+            emitter.send(killedUsers.get(0).getUserName());
+          }
+          logger.info("killedUserID:" + killedUsers.get(0).getUserRole());
         }
       } else {
         deathFlag = 0;
