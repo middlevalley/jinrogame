@@ -62,12 +62,27 @@ public interface UserMapper {
   @Update("UPDATE USERS SET killFlag = 0")
   void killFlagInit();
 
+  @Update("UPDATE USERS SET useFlag = 0")
+  void useFlagInit();
+
+  @Update("UPDATE USERS SET useFlag = useFlag + 1 where id = #{id}")
+  void useSkill(int id);
+
+  @Select("SELECT useFlag from users where userName = #{name}")
+  int selectGetUseFlag(String name);
+
+  @Select("SELECT sum(useFlag) from users")
+  int selectGetUseFlagSum();
+
   @Select("SELECT Max(voted) from users;")
   int selectMaxVote();
 
   @Delete("DELETE FROM users WHERE ID =#{id}")
   void deleteById(int id);
 
-  @Update("UPDATE USERS SET killFrag = killFrag + 1 where id = #{id}")
-  void updateKillFragUpById(int id);
+  @Update("UPDATE USERS SET killFlag = killFlag + 1 where id = #{id}")
+  void updateKillFlagUpById(int id);
+
+  @Select("SELECT * FROM users where killFlag >= 1 ")
+  ArrayList<Users> selectKilledUsers();
 }

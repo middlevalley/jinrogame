@@ -4,10 +4,40 @@
 <head>
   <meta charset="utf-8">
   <title>人狼ゲーム!!!</title>
+  <script>
+    window.onload = function () {
+      var sse = new EventSource('/vote/step9');
+      sse.onmessage = function (event) {
+        console.log("sse.onmessage");
+        console.log(event.data);
+        var p = document.getElementById("p1");
+        if (event.data == "complete") {
+          p.innerHTML = "<a href='/vote/step10'>朝へ</a>";
+        } else {
+          p.innerHTML = "終わるまでお待ちください";
+        }
+      }
+    }
+  </script>
+
 </head>
 
 <body>
-  <p>夜用ページです</p>
+  <div th:if="${arive_list}">
+    噛む人を決めてください
+    <table border="1">
+      <thead>
+        <th>名前</th>
+      </thead>
+      <tbody>
+        <tr th:each="arive,stat:${arive_list}">
+          <td>[[${arive.userName}]]</td>
+          <td><a th:href="@{/vote/step8(id=${arive.id})}">噛む</a></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <p id="p1">終わるまでお待ちください</p>
 </body>
 
 </html>

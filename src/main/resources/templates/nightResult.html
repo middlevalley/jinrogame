@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.springframework.org/schema/security">
+
+<head>
+  <meta charset="utf-8">
+  <title>人狼ゲーム!!!</title>
+</head>
+
+<body>
+  <div th:if="${killedUsers}">
+      以下のメンバーが殺されました
+      <table border="1">
+        <thead>
+          <th>名前</th>
+        </thead>
+        <tbody>
+          <tr th:each="user,stat:${killedUsers}">
+            <td>[[${user.userName}]]</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div th:if="${!(killedUsers)}">誰も殺されませんでした</div>
+    <div></div>
+  <p>夜結果表示用ページです</p>
+
+</body>
+
+</html>

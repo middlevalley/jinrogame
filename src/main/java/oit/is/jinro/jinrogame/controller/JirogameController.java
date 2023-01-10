@@ -16,6 +16,8 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 import oit.is.jinro.jinrogame.model.UserMapper;
 import oit.is.jinro.jinrogame.model.Users;
 import oit.is.jinro.jinrogame.model.VoteManager;
+import oit.is.jinro.jinrogame.model.Wolf;
+import oit.is.jinro.jinrogame.service.AsyncJinroNight;
 import oit.is.jinro.jinrogame.service.AsyncJinroVote;
 import oit.is.jinro.jinrogame.model.Role;
 import oit.is.jinro.jinrogame.model.RoleMapper;
@@ -36,9 +38,13 @@ public class JirogameController {
   @Autowired
   AsyncJinroVote JVote;
 
+  @Autowired
+  AsyncJinroNight JNight;
+
   @GetMapping("step1")
   public String vote01(ModelMap model) {
     UMapper.voteInit();
+    UMapper.useFlagInit();
     ArrayList<Users> users = UMapper.selectAll();
     model.addAttribute("users", users);
     return "vote.html";
@@ -111,19 +117,46 @@ public class JirogameController {
   @GetMapping("step7")
   public String night01(Principal prin, ModelMap model) {
     UMapper.killFlagInit();
-    System.out.println(UMapper.selectCountAliveOfWolves());
+    System.out.println(UMapper.selectCountAliveOfWolves() + prin.getName());
     if (UMapper.selectCountAliveOfWolves() == 0) {
-      model.addAttribute("winner", "人狼陣営");
+      model.addAttribute("winner", "村人陣営");
       return "gameSet.html";
     } else if (UMapper.selectCountAliveOfWolves() >= UMapper.selectCountAliveOfVillagers()) {
       model.addAttribute("winner", "人狼陣営");
       return "gameSet.html";
     } else {
-      if (UMapper.selectGetUserRoleByName(prin.getName()).equals("wolf")) {
+      if (UMapper.selectGetUserRoleByName(prin.getName()).equals("wolf")
+          && UMapper.selectGetUseFlag(prin.getName()) == 0) {
         ArrayList<Users> users = UMapper.selectGetAliveMember();
         model.addAttribute("arive_list", users);
+      } else if (UMapper.selectGetUserRoleByName(prin.getName()).equals("villager")) {
+        UMapper.useSkill(UMapper.selectByName(prin.getName()).getId());
       }
       return "night.html";
     }
+  }
+
+  @GetMapping("step8")
+  public String night02(@RequestParam Integer id, Principal prin, ModelMap model) {
+    UMapper.updateKillFlagUpById(id);
+    UMapper.useSkill(UMapper.selectByName(prin.getName()).getId());
+    return "night.html";
+  }
+
+  @GetMapping("step9")
+  public SseEmitter night03() {
+    final SseEmitter sseEmitter = new SseEmitter();
+    this.JNight.asyncShowUseSkill(sseEmitter);
+    return sseEmitter;
+  }
+
+  @GetMapping("step10")
+  public String night04(ModelMap model) {
+    ArrayList<Users> killedUsers = UMapper.selectKilledUsers();
+    for (Users u : killedUsers) {
+      UMapper.deleteById(u.getId());
+    }
+    model.addAttribute("killedUsers", killedUsers);
+    return "nightResult.html";
   }
 }

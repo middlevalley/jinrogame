@@ -9,5 +9,6 @@ CREATE TABLE users (
   userName VARCHAR NOT NULL,
   voted INT,
   userRole VARCHAR,
-  killFlag INT
+  killFlag INT,
+  useFlag INT
 );
