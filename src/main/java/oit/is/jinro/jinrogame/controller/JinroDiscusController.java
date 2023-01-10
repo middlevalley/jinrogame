@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.lang.reflect.Array;
 import java.security.Principal;
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
 import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,35 +43,45 @@ public class JinroDiscusController {
   public String Discus1(ModelMap model, Principal prin) {
     UMapper.InsertJoinUser(prin.getName());
     System.out.println("joinUserName: " + prin.getName());
-    return "preCounter.html";
+    return "ready.html";
   }
 
   @GetMapping("step2")
-  public String Discus2(ModelMap model) {
+  public String Discus2(@RequestParam Integer id, ModelMap model, Principal prin) {
     ArrayList<Users> users = UMapper.selectAll();
     ArrayList<Role> roles = RMapper.selectAll();
     int roleDicide;
-
-    for (Role role : roles) {
-      if (role.getRoleName().equals("villager")) {
-        role.setMAX_num(3);
-      } else {
-        if (role.getMAX_num() == 0) {
-          role.setMAX_num(1);
+    try {
+      if (id == 1) {
+        for (Role role : roles) {
+          if (role.getRoleName().equals("villager")) {
+            role.setMAX_num(3);
+          } else {
+            if (role.getMAX_num() == 0) {
+              role.setMAX_num(1);
+            }
+          }
         }
-      }
-    }
-    for (Users user : users) {
-      roleDicide = (int) (Math.random() * 10 % 2);
-      if (roles.get(roleDicide).getRoleName().equals("villager")) {
-        user.setUserRole(roles.get(roleDicide).getRoleName());
-      } else if (roles.get(roleDicide).getMAX_num() != 0) {
-        user.setUserRole(roles.get(roleDicide).getRoleName());
-        roles.get(roleDicide).setMAX_num(0);
+        for (Users user : users) {
+          roleDicide = (int) (Math.random() * 10 % 2);
+          if (roles.get(roleDicide).getRoleName().equals("villager")) {
+            user.setUserRole(roles.get(roleDicide).getRoleName());
+          } else if (roles.get(roleDicide).getMAX_num() != 0) {
+            user.setUserRole(roles.get(roleDicide).getRoleName());
+            roles.get(roleDicide).setMAX_num(0);
+          } else {
+            user.setUserRole("villager");
+          }
+          UMapper.updateById(user);
+        }
+        model.addAttribute("role", UMapper.selectGetUserRoleByName(prin.getName()));
       } else {
-        user.setUserRole("villager");
+        while (UMapper.selectGetUserRoleByName(prin.getName()) == null) {
+          TimeUnit.SECONDS.sleep(2);
+        }
+        model.addAttribute("role", UMapper.selectGetUserRoleByName(prin.getName()));
       }
-      UMapper.updateById(user);
+    } catch (Exception e) {
     }
     model.addAttribute("users", users);
     model.addAttribute("roles", roles);
@@ -103,7 +114,7 @@ public class JinroDiscusController {
       model.addAttribute("winner", "人狼陣営");
       return "gameSet.html";
     } else {
-      
+
       return "preDiscus.html";
     }
 
