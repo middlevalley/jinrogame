@@ -85,4 +85,8 @@ public interface UserMapper {
 
   @Select("SELECT * FROM users where killFlag >= 1 ")
   ArrayList<Users> selectKilledUsers();
+
+  @Update("Update USERS SET userRole=' '")
+  void userRoleInit();
+
 }
