@@ -24,7 +24,7 @@
 
 <body>
   <div th:if="${arive_list}">
-    噛む人を決めてください
+    役職を知りたい人を選んでください
     <table border="1">
       <thead>
         <th>名前</th>
@@ -32,11 +32,40 @@
       <tbody>
         <tr th:each="arive,stat:${arive_list}">
           <td>[[${arive.userName}]]</td>
-          <td><a th:href="@{/vote/step8(id=${arive.id})}">噛む</a></td>
+          <td><a th:href="@{/vote/step8(id=${arive.id})}">役職を見る</a></td>
         </tr>
       </tbody>
     </table>
   </div>
+  <div th:if="${gird_list}">
+    守る人を選択してください
+    <table border="1">
+      <thead>
+        <th>名前</th>
+      </thead>
+      <tbody>
+        <tr th:each="gird,stat:${gird_list}">
+          <td>[[${gird.userName}]]</td>
+          <td><a th:href="@{/vote/step8(id=${gird.id})}">守る</a></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div th:if="${kill_list}">
+    噛む人を決めてください
+    <table border="1">
+      <thead>
+        <th>名前</th>
+      </thead>
+      <tbody>
+        <tr th:each="kill,stat:${kill_list}">
+          <td>[[${kill.userName}]]</td>
+          <td><a th:href="@{/vote/step8(id=${kill.id})}">噛む</a></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  [[${role_name}]]
   <p id="p1">終わるまでお待ちください</p>
 </body>
 

@@ -98,6 +98,7 @@ public class JirogameController {
 
   @GetMapping("step5")
   public String vote05(@RequestParam String userName, ModelMap model) {
+    UMapper.killFlagInit();
     if (!(userName.equals("-1"))) {
       model.addAttribute("killedUser", userName + "が処刑されました。");
       return "result.html";
@@ -116,7 +117,6 @@ public class JirogameController {
 
   @GetMapping("step7")
   public String night01(Principal prin, ModelMap model) {
-    UMapper.killFlagInit();
     System.out.println(UMapper.selectCountAliveOfWolves() + prin.getName());
     if (UMapper.selectCountAliveOfWolves() == 0) {
       model.addAttribute("winner", "村人陣営");
@@ -127,19 +127,35 @@ public class JirogameController {
     } else {
       if (UMapper.selectGetUserRoleByName(prin.getName()).equals("wolf")
           && UMapper.selectGetUseFlag(prin.getName()) == 0) {
-        ArrayList<Users> users = UMapper.selectGetAliveMember();
-        model.addAttribute("arive_list", users);
+        ArrayList<Users> users = UMapper.selectGetAliveVillagersMember();
+        model.addAttribute("kill_list", users);
       } else if (UMapper.selectGetUserRoleByName(prin.getName()).equals("villager")) {
         UMapper.useSkill(UMapper.selectByName(prin.getName()).getId());
+      } else if (UMapper.selectGetUserRoleByName(prin.getName()).equals("knight")
+          && UMapper.selectGetUseFlag(prin.getName()) == 0) {
+        ArrayList<Users> users = UMapper.selectGetAliveMember();
+        model.addAttribute("gird_list", users);
+      } else if (UMapper.selectGetUserRoleByName(prin.getName()).equals("necro")
+          && UMapper.selectGetUseFlag(prin.getName()) == 0) {
+        ArrayList<Users> users = UMapper.selectGetAliveMember();
+        model.addAttribute("arive_list", users);
       }
+
       return "night.html";
     }
   }
 
   @GetMapping("step8")
   public String night02(@RequestParam Integer id, Principal prin, ModelMap model) {
-    UMapper.updateKillFlagUpById(id);
     UMapper.useSkill(UMapper.selectByName(prin.getName()).getId());
+    if (UMapper.selectByName(prin.getName()).getUserRole().equals("wolf")) {
+      UMapper.updateKillFlagUpById(id);
+    } else if (UMapper.selectByName(prin.getName()).getUserRole().equals("knight")) {
+      UMapper.updateKillFlagDownById(id);
+    } else if (UMapper.selectByName(prin.getName()).getUserRole().equals("necro")) {
+      String name = UMapper.useNecroSkill(id);
+      model.addAttribute("role_name", "選んだ人の役職は" + name + "です");
+    }
     return "night.html";
   }
 
