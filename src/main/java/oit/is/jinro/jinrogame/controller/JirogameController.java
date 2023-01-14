@@ -97,11 +97,15 @@ public class JirogameController {
   }
 
   @GetMapping("step5")
-  public String vote05(@RequestParam String userName, ModelMap model) {
+  public String vote05(@RequestParam String userName, ModelMap model, Principal prin) {
     UMapper.killFlagInit();
     if (!(userName.equals("-1"))) {
-      model.addAttribute("killedUser", userName + "が処刑されました。");
-      return "result.html";
+      if (userName.equals(prin.getName())) {
+        return "gameOver.html";
+      } else {
+        model.addAttribute("killedUser", userName + "が処刑されました。");
+        return "result.html";
+      }
     } else {
       model.addAttribute("killedUser", "無効な投票となりました");
       return "result.html";
