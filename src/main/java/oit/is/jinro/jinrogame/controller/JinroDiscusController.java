@@ -63,10 +63,11 @@ public class JinroDiscusController {
             }
           }
         }
-        while (UMapper.selectCountAliveOfWolves() == 0) {
+        while (UMapper.selectCountAliveOfWolves() == 0 && UMapper.selectCountAliveOfNecro() == 0
+            && UMapper.selectCountAliveOfKnights() == 0) {
           UMapper.userRoleInit();
           for (Users user : users) {
-            roleDicide = (int) (Math.random() * 10 % 2);
+            roleDicide = (int) (Math.random() * 10 % 4);
             if (roles.get(roleDicide).getRoleName().equals("villager")) {
               user.setUserRole(roles.get(roleDicide).getRoleName());
             } else if (roles.get(roleDicide).getMAX_num() != 0) {

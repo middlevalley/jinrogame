@@ -41,6 +41,12 @@ public interface UserMapper {
   @Select("SELECT count(*) from roles join users on roles.roleName = users.userRole where camp = 'wolves'")
   int selectCountAliveOfWolves();
 
+  @Select("SELECT count(*) from roles join users on roles.roleName = users.userRole where camp = 'knight'")
+  int selectCountAliveOfKnights();
+
+  @Select("SELECT count(*) from roles join users on roles.roleName = users.userRole where camp = 'necro'")
+  int selectCountAliveOfNecro();
+
   @Select("SELECT count(*) from roles join users on roles.roleName = users.userRole where camp = 'villagers'")
   int selectCountAliveOfVillagers();
 
@@ -86,7 +92,7 @@ public interface UserMapper {
   @Select("SELECT * FROM users where killFlag >= 1 ")
   ArrayList<Users> selectKilledUsers();
 
-  @Update("Update USERS SET userRole=' '")
+  @Update("Update USERS SET userRole=NULL")
   void userRoleInit();
 
 }
