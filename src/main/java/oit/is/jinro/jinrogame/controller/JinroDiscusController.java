@@ -114,7 +114,7 @@ public class JinroDiscusController {
   }
 
   @GetMapping("step5")
-  public String Discus5(ModelMap model) {
+  public String Discus5(ModelMap model, Principal prin) {
     if (UMapper.selectCountAliveOfWolves() == 0) {
       model.addAttribute("winner", "村人陣営");
       return "gameSet.html";
@@ -122,7 +122,9 @@ public class JinroDiscusController {
       model.addAttribute("winner", "人狼陣営");
       return "gameSet.html";
     } else {
-
+      if (UMapper.selectByName(prin.getName()) == null) {
+        return "gameOver.html";
+      }
       return "preDiscus.html";
     }
 
