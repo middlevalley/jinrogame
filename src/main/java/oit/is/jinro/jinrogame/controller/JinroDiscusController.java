@@ -51,33 +51,37 @@ public class JinroDiscusController {
     ArrayList<Users> users = UMapper.selectAll();
     ArrayList<Role> roles = RMapper.selectAll();
     int roleDicide;
+    System.out.println(id);
+    for (Users user : users) {
+      user.setUserRole("");
+    }
     try {
       if (id == 1) {
-
         for (Role role : roles) {
+          System.out.println(role.getRoleName());
           if (role.getRoleName().equals("villager")) {
-            role.setMAX_num(3);
           } else {
-            if (role.getMAX_num() == 0) {
-              role.setMAX_num(1);
+            roleDicide = (int) (Math.random() * 100 % users.size());
+            while (true) {
+              if (users.get(roleDicide).getUserRole().isEmpty()) {
+                users.get(roleDicide).setUserRole(role.getRoleName());
+                break;
+              } else {
+                if (roleDicide + 1 != users.size()) {
+                  roleDicide++;
+                } else {
+                  roleDicide = 0;
+                }
+              }
             }
+            System.out.println("dicideNum: " + roleDicide);
           }
         }
-        while (UMapper.selectCountAliveOfWolves() == 0 && UMapper.selectCountAliveOfNecro() == 0
-            && UMapper.selectCountAliveOfKnights() == 0) {
-          UMapper.userRoleInit();
-          for (Users user : users) {
-            roleDicide = (int) (Math.random() * 10 % 4);
-            if (roles.get(roleDicide).getRoleName().equals("villager")) {
-              user.setUserRole(roles.get(roleDicide).getRoleName());
-            } else if (roles.get(roleDicide).getMAX_num() != 0) {
-              user.setUserRole(roles.get(roleDicide).getRoleName());
-              roles.get(roleDicide).setMAX_num(0);
-            } else {
-              user.setUserRole("villager");
-            }
-            UMapper.updateById(user);
+        for (Users user : users) {
+          if (user.getUserRole().isEmpty()) {
+            user.setUserRole("villager");
           }
+          UMapper.updateById(user);
         }
         model.addAttribute("role", UMapper.selectGetUserRoleByName(prin.getName()));
       } else {
@@ -87,6 +91,7 @@ public class JinroDiscusController {
         model.addAttribute("role", UMapper.selectGetUserRoleByName(prin.getName()));
       }
     } catch (Exception e) {
+      System.out.println("Exception:" + e.getClass().getName() + ":" + e.getMessage());
     }
     return "preCounter.html";
   }

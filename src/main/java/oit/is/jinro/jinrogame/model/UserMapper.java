@@ -23,6 +23,12 @@ public interface UserMapper {
   @Select("SELECT * from users")
   ArrayList<Users> selectGetAliveMember();
 
+  @Select("SELECT * from roles join users on roles.roleName = users.userRole where camp = 'villagers'")
+  ArrayList<Users> selectGetAliveVillagersMember();
+
+  @Select("Select * from users where not(userRole = 'villager')")
+  Users selectNotVillager();
+
   @Select("Select min(id) from users")
   int selectGetMinId();
 
@@ -31,6 +37,9 @@ public interface UserMapper {
 
   @Select("SELECT voted from users where id = #{id}")
   int selectByIdGetVoted(int id);
+
+  @Select("SELECT userRole from users where id = #{id}")
+  String selectGetUserRoleById(int id);
 
   @Select("SELECT userRole from users where userName = #{name}")
   String selectGetUserRoleByName(String name);
@@ -41,10 +50,10 @@ public interface UserMapper {
   @Select("SELECT count(*) from roles join users on roles.roleName = users.userRole where camp = 'wolves'")
   int selectCountAliveOfWolves();
 
-  @Select("SELECT count(*) from roles join users on roles.roleName = users.userRole where camp = 'knight'")
+  @Select("SELECT count(*) from roles join users on roles.roleName = users.userRole where users.userRole = 'knight'")
   int selectCountAliveOfKnights();
 
-  @Select("SELECT count(*) from roles join users on roles.roleName = users.userRole where camp = 'necro'")
+  @Select("SELECT count(*) from roles join users on roles.roleName = users.userRole where users.userRole = 'necro'")
   int selectCountAliveOfNecro();
 
   @Select("SELECT count(*) from roles join users on roles.roleName = users.userRole where camp = 'villagers'")
@@ -74,6 +83,9 @@ public interface UserMapper {
   @Update("UPDATE USERS SET useFlag = useFlag + 1 where id = #{id}")
   void useSkill(int id);
 
+  @Select("SELECT userRole from users where id = #{id}")
+  String useNecroSkill(int id);
+
   @Select("SELECT useFlag from users where userName = #{name}")
   int selectGetUseFlag(String name);
 
@@ -88,6 +100,9 @@ public interface UserMapper {
 
   @Update("UPDATE USERS SET killFlag = killFlag + 1 where id = #{id}")
   void updateKillFlagUpById(int id);
+
+  @Update("UPDATE USERS SET killFlag = killFlag - 1 where id = #{id}")
+  void updateKillFlagDownById(int id);
 
   @Select("SELECT * FROM users where killFlag >= 1 ")
   ArrayList<Users> selectKilledUsers();
