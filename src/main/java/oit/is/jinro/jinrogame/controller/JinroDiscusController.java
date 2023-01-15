@@ -20,6 +20,8 @@ import com.fasterxml.jackson.annotation.JsonCreator.Mode;
 
 import oit.is.jinro.jinrogame.model.UserMapper;
 import oit.is.jinro.jinrogame.model.Users;
+import oit.is.jinro.jinrogame.model.Winner;
+import oit.is.jinro.jinrogame.model.WinnerMapper;
 import oit.is.jinro.jinrogame.service.AsyncJinroCounter;
 import oit.is.jinro.jinrogame.model.Role;
 import oit.is.jinro.jinrogame.model.RoleMapper;
@@ -35,6 +37,9 @@ public class JinroDiscusController {
 
   @Autowired
   RoleMapper RMapper;
+
+  @Autowired
+  WinnerMapper WMapper;
 
   @Autowired
   AsyncJinroCounter Jcounter;
@@ -117,8 +122,12 @@ public class JinroDiscusController {
   public String Discus5(ModelMap model, Principal prin) {
     if (UMapper.selectCountAliveOfWolves() == 0) {
       model.addAttribute("winner", "村人陣営");
+      WMapper.InsertWinnersName(prin.getName(), UMapper.SelectCampByName(prin.getName()));
+      UMapper.usersTableInit();
       return "gameSet.html";
     } else if (UMapper.selectCountAliveOfWolves() >= UMapper.selectCountAliveOfVillagers()) {
+      WMapper.InsertWinnersName(prin.getName(), UMapper.SelectCampByName(prin.getName()));
+      UMapper.usersTableInit();
       model.addAttribute("winner", "人狼陣営");
       return "gameSet.html";
     } else {

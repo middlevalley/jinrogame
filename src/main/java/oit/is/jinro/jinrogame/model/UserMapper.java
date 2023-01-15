@@ -59,6 +59,9 @@ public interface UserMapper {
   @Select("SELECT count(*) from roles join users on roles.roleName = users.userRole where camp = 'villagers'")
   int selectCountAliveOfVillagers();
 
+  @Select("select camp from roles join users on roles.roleName = users.userRole where userName = #{name}")
+  String SelectCampByName(String name);
+
   @Select("SELECT * from users where voted = #{num}")
   ArrayList<Users> selectKilledUser(int num);
 
@@ -109,5 +112,8 @@ public interface UserMapper {
 
   @Update("Update USERS SET userRole=NULL")
   void userRoleInit();
+
+  @Delete("DELETE from users")
+  void usersTableInit();
 
 }
