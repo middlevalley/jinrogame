@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>人狼ゲーム!!!</title>
+</head>
+
+<body>
+  <p>順位表です</p>
+  <table border="1">
+    <thead>
+      <th>名前</th>
+      <th>勝利数</th>
+    </thead>
+    <tbody>
+      <span th:if="${ranks}">
+        <tr th:each="rank,stat:${ranks}">
+          <td>[[${rank.userName}]]</td>
+          <td>[[${rank.count}]]</td>
+        </tr>
+      </span>
+    </tbody>
+  </table>
+</body>
+
+</html>

@@ -3,6 +3,7 @@ package oit.is.jinro.jinrogame.model;
 public class Winner {
   int id;
   String userName;
+  int count;
   String camp;
 
   public Winner() {
@@ -24,6 +25,15 @@ public class Winner {
   public void setUserName(String userName) {
     this.userName = userName;
   }
+
+    public int getCount(){
+    return count;
+  }
+
+  public void setCount(int count){
+    this.count = count;
+  }
+
 
   public String getCamp() {
     return camp;

@@ -136,6 +136,12 @@ public class JinroDiscusController {
       }
       return "preDiscus.html";
     }
+  }
 
+  @GetMapping("step2434")
+  public String Rank(ModelMap model) {
+    model.addAttribute("ranks", WMapper.selectRank());
+    System.out.println(WMapper.selectRank().get(0).getCount());
+    return "ranking.html";
   }
 }

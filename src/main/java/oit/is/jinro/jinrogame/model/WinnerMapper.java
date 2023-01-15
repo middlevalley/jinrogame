@@ -14,4 +14,8 @@ public interface WinnerMapper {
 
   @Insert("INSERT INTO winner (userName, camp) VALUES (#{name}, #{camp})")
   void InsertWinnersName(String name, String camp);
+
+  @Select("select userName, count(userName) as count from winner group by userName")
+  ArrayList<Winner> selectRank();
+
 }
