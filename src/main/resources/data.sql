@@ -1,7 +1,7 @@
-INSERT INTO roles (roleName,camp) VALUES ('villager','villagers');
-INSERT INTO roles (roleName,camp) VALUES ('knight','villagers');
-INSERT INTO roles (roleName,camp) VALUES ('necro','villagers');
-INSERT INTO roles (roleName,camp) VALUES ('wolf','wolves');
+INSERT INTO roles (roleName,camp, roleImage) VALUES ('villager','villagers', 'villager_A.png');
+INSERT INTO roles (roleName,camp, roleImage) VALUES ('knight','villagers', 'knight.png');
+INSERT INTO roles (roleName,camp, roleImage) VALUES ('diviner','villagers', 'diviner.png');
+INSERT INTO roles (roleName,camp, roleImage) VALUES ('wolf','wolves', 'werewolf.png');
 INSERT INTO winner (userName, camp) VALUES ('user1', 'wolves');
 INSERT INTO winner (userName, camp) VALUES ('user1', 'villagers');
 INSERT INTO winner (userName, camp) VALUES ('user1', 'wolves');

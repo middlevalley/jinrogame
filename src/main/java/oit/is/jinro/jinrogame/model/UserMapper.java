@@ -23,7 +23,7 @@ public interface UserMapper {
   @Select("SELECT * from users")
   ArrayList<Users> selectGetAliveMember();
 
-  @Select("SELECT * from roles join users on roles.roleName = users.userRole where camp = 'villagers'")
+  @Select("SELECT users.id, userName, voted, users.userRole from roles join users on roles.roleName = users.userRole where camp = 'villagers'")
   ArrayList<Users> selectGetAliveVillagersMember();
 
   @Select("Select * from users where not(userRole = 'villager')")
@@ -53,8 +53,8 @@ public interface UserMapper {
   @Select("SELECT count(*) from roles join users on roles.roleName = users.userRole where users.userRole = 'knight'")
   int selectCountAliveOfKnights();
 
-  @Select("SELECT count(*) from roles join users on roles.roleName = users.userRole where users.userRole = 'necro'")
-  int selectCountAliveOfNecro();
+  @Select("SELECT count(*) from roles join users on roles.roleName = users.userRole where users.userRole = 'diviner'")
+  int selectCountAliveOfdiviner();
 
   @Select("SELECT count(*) from roles join users on roles.roleName = users.userRole where camp = 'villagers'")
   int selectCountAliveOfVillagers();
@@ -87,7 +87,7 @@ public interface UserMapper {
   void useSkill(int id);
 
   @Select("SELECT userRole from users where id = #{id}")
-  String useNecroSkill(int id);
+  String usedivinerSkill(int id);
 
   @Select("SELECT useFlag from users where userName = #{name}")
   int selectGetUseFlag(String name);

@@ -4,6 +4,7 @@
 <head>
   <meta charset="utf-8">
   <title>人狼ゲーム!!!</title>
+  <link href="../css/main.css" rel="stylesheet">
   <script>
     window.onload = function () {
       var sse = new EventSource('/discus/step4');
@@ -19,10 +20,13 @@
       }
     }
   </script>
+
 </head>
 
-<body>
-  <p id="p1">議論中</p>
+<body class="discus">
+  <div class="whitetext">
+    <p id="p1">議論中</p>
+  </div>
 </body>
 
 </html>

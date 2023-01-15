@@ -1,0 +1,41 @@
+.disp-img {
+  background-image: url(/../img/jinro.png);
+  /* 画像のURLを指定       */
+  background-repeat: no-repeat;
+  /* 画像の繰り返しを指定  */
+}
+
+.noon {
+  background-image: url(../img/village_noon.jpg);
+  background-size: auto;
+}
+
+.night {
+  background-image: url(../img/village_night.jpg);
+  background-size: auto;
+}
+
+.discus {
+  background-image: url(../img/discussion.jpg);
+  background-size: auto;
+}
+
+.attack {
+  background-image: url(../img/attack.jpg);
+  background-size: auto;
+}
+
+h1 {
+  font-size: 36px;
+  color: tomato;
+}
+
+.whitetext {
+  color: snow;
+  font-size: 24px;
+}
+
+p {
+  color: snow;
+  font-size: 24px;
+}

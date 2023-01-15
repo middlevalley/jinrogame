@@ -71,11 +71,8 @@ public class AsyncJinroVote {
       logger.info("send:" + count);
       logger.info(String.valueOf(uMapper.selectGetAlive()));
       if (uMapper.selectGetAlive() <= count) {
-        if (killedUsers.size() == 0) {
-          killedUsers = uMapper.selectKilledUser(uMapper.selectMaxVote());
-        }
-        System.out.println(killedUsers.size());
         if (deathFlag == 0) {
+          killedUsers = uMapper.selectKilledUser(uMapper.selectMaxVote());
           if (killedUsers.size() != 1) {
             emitter.send("noDeath");
           } else {

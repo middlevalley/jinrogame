@@ -23,6 +23,7 @@ import oit.is.jinro.jinrogame.model.Users;
 import oit.is.jinro.jinrogame.model.Winner;
 import oit.is.jinro.jinrogame.model.WinnerMapper;
 import oit.is.jinro.jinrogame.service.AsyncJinroCounter;
+import oit.is.jinro.jinrogame.service.AsyncJinroVote;
 import oit.is.jinro.jinrogame.model.Role;
 import oit.is.jinro.jinrogame.model.RoleMapper;
 
@@ -31,6 +32,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping("/discus")
 public class JinroDiscusController {
+  int JinroWinFlag = 0;
+  int ViWinFlag = 0;
 
   @Autowired
   UserMapper UMapper;
@@ -43,6 +46,9 @@ public class JinroDiscusController {
 
   @Autowired
   AsyncJinroCounter Jcounter;
+
+  @Autowired
+  AsyncJinroVote JVote;
 
   @GetMapping("step1")
   public String Discus1(ModelMap model, Principal prin) {
@@ -108,6 +114,7 @@ public class JinroDiscusController {
 
     model.addAttribute("users", users);
     model.addAttribute("roles", roles);
+    JVote.countInit();
     return "counter.html";
   }
 
@@ -120,15 +127,17 @@ public class JinroDiscusController {
 
   @GetMapping("step5")
   public String Discus5(ModelMap model, Principal prin) {
-    if (UMapper.selectCountAliveOfWolves() == 0) {
+       if (UMapper.selectCountAliveOfWolves() == 0 && JinroWinFlag == 0) {
       model.addAttribute("winner", "村人陣営");
+      ViWinFlag++;
       WMapper.InsertWinnersName(prin.getName(), UMapper.SelectCampByName(prin.getName()));
       UMapper.usersTableInit();
       return "gameSet.html";
-    } else if (UMapper.selectCountAliveOfWolves() >= UMapper.selectCountAliveOfVillagers()) {
+    } else if (UMapper.selectCountAliveOfWolves() >= UMapper.selectCountAliveOfVillagers() && ViWinFlag == 0) {
+      model.addAttribute("winner", "人狼陣営");
+      JinroWinFlag++;
       WMapper.InsertWinnersName(prin.getName(), UMapper.SelectCampByName(prin.getName()));
       UMapper.usersTableInit();
-      model.addAttribute("winner", "人狼陣営");
       return "gameSet.html";
     } else {
       if (UMapper.selectByName(prin.getName()) == null) {

@@ -4,6 +4,7 @@
 <head>
   <meta charset="utf-8">
   <title>人狼ゲーム!!!</title>
+  <link href="../css/main.css" rel="stylesheet">
   <script>
     window.onload = function () {
       var sse = new EventSource('/vote/step10');
@@ -28,8 +29,8 @@
   </script>
 </head>
 
-<body>
-  <div>
+<body class="night">
+  <div class="whitetext">
     以下のメンバーが殺されました
     無記入ならば全員生存です。
     <table border="1">
