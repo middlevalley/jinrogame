@@ -12,3 +12,9 @@ CREATE TABLE users (
   killFlag INT,
   useFlag INT
 );
+
+CREATE TABLE winner(
+  id IDENTITY,
+  userName VARCHAR NOT NULL,
+  camp VARCHAR
+)

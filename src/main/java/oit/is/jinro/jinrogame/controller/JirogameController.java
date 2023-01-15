@@ -16,6 +16,7 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 import oit.is.jinro.jinrogame.model.UserMapper;
 import oit.is.jinro.jinrogame.model.Users;
 import oit.is.jinro.jinrogame.model.VoteManager;
+import oit.is.jinro.jinrogame.model.WinnerMapper;
 import oit.is.jinro.jinrogame.model.Wolf;
 import oit.is.jinro.jinrogame.service.AsyncJinroNight;
 import oit.is.jinro.jinrogame.service.AsyncJinroVote;
@@ -34,6 +35,8 @@ public class JirogameController {
   UserMapper UMapper;
   @Autowired
   RoleMapper RMapper;
+  @Autowired
+  WinnerMapper WMapper;
 
   @Autowired
   AsyncJinroVote JVote;
@@ -124,9 +127,13 @@ public class JirogameController {
     System.out.println(UMapper.selectCountAliveOfWolves() + prin.getName());
     if (UMapper.selectCountAliveOfWolves() == 0) {
       model.addAttribute("winner", "村人陣営");
+      WMapper.InsertWinnersName(prin.getName(), UMapper.SelectCampByName(prin.getName()));
+      UMapper.usersTableInit();
       return "gameSet.html";
     } else if (UMapper.selectCountAliveOfWolves() >= UMapper.selectCountAliveOfVillagers()) {
       model.addAttribute("winner", "人狼陣営");
+      WMapper.InsertWinnersName(prin.getName(), UMapper.SelectCampByName(prin.getName()));
+      UMapper.usersTableInit();
       return "gameSet.html";
     } else {
       if (UMapper.selectGetUserRoleByName(prin.getName()).equals("wolf")
