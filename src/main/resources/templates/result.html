@@ -4,13 +4,14 @@
 <head>
   <meta charset="utf-8">
   <title>結果発表</title>
+  <link href="../css/main.css" rel="stylesheet">
 </head>
 
-<body>
-  <div th:if="${killedUser}">
+<body class="discus">
+  <div th:if="${killedUser}" class="whitetext">
     [[${killedUser}]]
   </div>
-  <div>
+  <div class="whitetext">
     <a href="/vote/step7">次へ</a>
   </div>
 </body>

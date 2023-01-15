@@ -4,6 +4,7 @@
 <head>
   <meta charset="utf-8">
   <title>人狼ゲーム!!!</title>
+  <link href="../css/main.css" rel="stylesheet">
   <script>
     window.onload = function () {
       var sse = new EventSource('/vote/step9');
@@ -22,8 +23,8 @@
 
 </head>
 
-<body>
-  <div th:if="${arive_list}">
+<body class="night">
+  <div th:if="${arive_list}" class="whitetext">
     役職を知りたい人を選んでください
     <table border="1">
       <thead>
@@ -37,7 +38,7 @@
       </tbody>
     </table>
   </div>
-  <div th:if="${gird_list}">
+  <div th:if="${gird_list}" class="whitetext">
     守る人を選択してください
     <table border="1">
       <thead>
@@ -51,7 +52,7 @@
       </tbody>
     </table>
   </div>
-  <div th:if="${kill_list}">
+  <div th:if="${kill_list}" class="whitetext">
     噛む人を決めてください
     <table border="1">
       <thead>
@@ -65,7 +66,7 @@
       </tbody>
     </table>
   </div>
-  [[${role_name}]]
+  <p>[[${role_name}]]</p>
   <p id="p1">終わるまでお待ちください</p>
 </body>
 

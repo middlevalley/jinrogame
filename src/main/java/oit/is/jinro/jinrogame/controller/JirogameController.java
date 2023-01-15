@@ -44,6 +44,9 @@ public class JirogameController {
   @Autowired
   AsyncJinroNight JNight;
 
+  int JinroWinFlag = 0;
+  int ViWinFlag = 0;
+
   @GetMapping("step1")
   public String vote01(ModelMap model) {
     UMapper.voteInit();
@@ -125,17 +128,20 @@ public class JirogameController {
   @GetMapping("step7")
   public String night01(Principal prin, ModelMap model) {
     System.out.println(UMapper.selectCountAliveOfWolves() + prin.getName());
-    if (UMapper.selectCountAliveOfWolves() == 0) {
+    if (UMapper.selectCountAliveOfWolves() == 0 && JinroWinFlag == 0) {
       model.addAttribute("winner", "村人陣営");
+      ViWinFlag++;
       WMapper.InsertWinnersName(prin.getName(), UMapper.SelectCampByName(prin.getName()));
       UMapper.usersTableInit();
       return "gameSet.html";
-    } else if (UMapper.selectCountAliveOfWolves() >= UMapper.selectCountAliveOfVillagers()) {
+    } else if (UMapper.selectCountAliveOfWolves() >= UMapper.selectCountAliveOfVillagers() && ViWinFlag == 0) {
       model.addAttribute("winner", "人狼陣営");
+      JinroWinFlag++;
       WMapper.InsertWinnersName(prin.getName(), UMapper.SelectCampByName(prin.getName()));
       UMapper.usersTableInit();
       return "gameSet.html";
     } else {
+      JNight.killFlagInit();
       if (UMapper.selectGetUserRoleByName(prin.getName()).equals("wolf")
           && UMapper.selectGetUseFlag(prin.getName()) == 0) {
         ArrayList<Users> users = UMapper.selectGetAliveVillagersMember();
@@ -146,7 +152,7 @@ public class JirogameController {
           && UMapper.selectGetUseFlag(prin.getName()) == 0) {
         ArrayList<Users> users = UMapper.selectGetAliveMember();
         model.addAttribute("gird_list", users);
-      } else if (UMapper.selectGetUserRoleByName(prin.getName()).equals("necro")
+      } else if (UMapper.selectGetUserRoleByName(prin.getName()).equals("diviner")
           && UMapper.selectGetUseFlag(prin.getName()) == 0) {
         ArrayList<Users> users = UMapper.selectGetAliveMember();
         model.addAttribute("arive_list", users);
@@ -163,8 +169,8 @@ public class JirogameController {
       UMapper.updateKillFlagUpById(id);
     } else if (UMapper.selectByName(prin.getName()).getUserRole().equals("knight")) {
       UMapper.updateKillFlagDownById(id);
-    } else if (UMapper.selectByName(prin.getName()).getUserRole().equals("necro")) {
-      String name = UMapper.useNecroSkill(id);
+    } else if (UMapper.selectByName(prin.getName()).getUserRole().equals("diviner")) {
+      String name = UMapper.usedivinerSkill(id);
       model.addAttribute("role_name", "選んだ人の役職は" + name + "です");
     }
     return "night.html";

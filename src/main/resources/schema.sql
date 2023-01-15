@@ -1,7 +1,8 @@
 CREATE TABLE roles (
   id IDENTITY,
   roleName VARCHAR NOT NULL,
-  camp VARCHAR
+  camp VARCHAR,
+  roleImage VARCHAR
 );
 
 CREATE TABLE users (

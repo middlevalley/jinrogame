@@ -53,7 +53,7 @@ public class AsyncJinroNight {
         for (Users u : killedUsers) {
           uMapper.deleteById(u.getId());
         }
-        if (killedUsers.size() != 0) {
+        if (killedUsers.size() == 0) {
           emitter.send(killedUsers);
         } else {
           emitter.send("殺された人はいませんでした。");

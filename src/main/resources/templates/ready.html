@@ -26,12 +26,13 @@
       }
     }
   </script>
+  <link rel="stylesheet" href="../css/main.css">
 </head>
 
-<p>以下のメンバーで始めます</p>
+<h1>以下のメンバーで始めます</h1>
 
-<body>
-  <table border="1">
+<body class="noon">
+  <table border="1" class="whitetext">
     <thead>
       <td>名前</td>
     </thead>
@@ -43,10 +44,10 @@
       </span>
     </tbody>
   </table>
-  <div sec:authorize="hasRole('ROLE_HOST')">
+  <div sec:authorize="hasRole('ROLE_HOST')" class="whitetext">
     <a href="/discus/step2?id=1">役職を振る</a>
   </div>
-  <div sec:authorize="hasRole('ROLE_USER')">
+  <div sec:authorize="hasRole('ROLE_USER')" class="whitetext">
     <a href="/discus/step2?id=2">役職を見る</a>
   </div>
 </body>
