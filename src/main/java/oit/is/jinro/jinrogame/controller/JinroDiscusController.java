@@ -127,7 +127,7 @@ public class JinroDiscusController {
 
   @GetMapping("step5")
   public String Discus5(ModelMap model, Principal prin) {
-       if (UMapper.selectCountAliveOfWolves() == 0 && JinroWinFlag == 0) {
+    if (UMapper.selectCountAliveOfWolves() == 0 && JinroWinFlag == 0) {
       model.addAttribute("winner", "村人陣営");
       ViWinFlag++;
       WMapper.InsertWinnersName(prin.getName(), UMapper.SelectCampByName(prin.getName()));
